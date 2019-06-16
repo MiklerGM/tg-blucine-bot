@@ -1,0 +1,43 @@
+{
+  "name": "tg-blucine-bot",
+  "version": "1.0.0",
+  "description": "Telegram bot for finding blu-ray release dates",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "lint-fix": "eslint . --fix",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MiklerGM/tg-blucine-bot.git"
+  },
+  "author": "Michael Orlov",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/MiklerGM/tg-blucine-bot/issues"
+  },
+  "homepage": "https://github.com/MiklerGM/tg-blucine-bot#readme",
+  "lint-staged": {
+    "*.js": ["eslint", "jest --bail --findRelatedTests"]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-node": "^4.0.0",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "husky": "^2.4.1",
+    "jest": "^24.8.0",
+    "lint-staged": "^8.2.1"
+  },
+  "dependencies": {
+    "await-to-js": "^2.1.1",
+    "axios": "^0.19.0",
+    "sentry": "^0.1.2"
+  }
+}
