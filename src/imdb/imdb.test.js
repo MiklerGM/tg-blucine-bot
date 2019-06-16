@@ -13,6 +13,7 @@ describe('films from suggestion', () => {
   const batmanRes = [
     { label: 'The Batman', id: 'tt1877830', year: 2021 },
     { label: 'Batman Begins', id: 'tt0372784', year: 2005 },
+    { label: "Batman vs Teenage Mutant Ninja Turtles", id: "tt9775360", year: 2019 },
     { label: 'Batman', id: 'tt0096895', year: 1989 },
     { label: 'Batman v Superman: Dawn of Justice', id: 'tt2975590', year: 2016 },
     { label: 'Batman Returns', id: 'tt0103776', year: 1992 },
