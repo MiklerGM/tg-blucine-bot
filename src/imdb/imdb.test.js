@@ -1,9 +1,10 @@
 const axios = require('axios');
-jest.mock("axios");
+jest.mock('axios');
 
 const imdb = require('./imdb');
 
 describe('imdb suggestions', () => {
+
   const avengers = require('./suggestion/avengers.test.json');
   const avengersRes = require('./suggestion/avengers.res.json');
   const batman = require('./suggestion/batman.test.json');
@@ -35,18 +36,21 @@ describe('imdb suggestions', () => {
       .toEqual('https://v2.sg.media-imdb.com/suggestion/title/b/batman.json');
   });
 
-  // https://stackoverflow.com/questions/45016033/how-do-i-test-axios-in-jest
-  test('Suggestions received', async () => {
-    axios.get.mockImplementation(() => Promise.resolve(strange));
-    let res = await imdb.getSuggestions('Doctor Strange');
-    expect(axios.get).toBeCalledWith('https://v2.sg.media-imdb.com/suggestion/d/doctor_strange.json')
-    expect(res).toEqual([null, strangeRes]);
-    res = await imdb.getSuggestions('');
-    expect(res).toEqual([null, []]);
-  });
+  describe('Mocked IMDB call', () => {
+    // https://stackoverflow.com/questions/45016033/how-do-i-test-axios-in-jest
+    test('Suggestions received', async () => {
+      axios.get.mockResolvedValue({ data: strange });
+      let res = await imdb.getSuggestions('Doctor Strange');
+      expect(axios.get).toBeCalledWith('https://v2.sg.media-imdb.com/suggestion/d/doctor_strange.json')
+      expect(res).toEqual([null, strangeRes]);
+      res = await imdb.getSuggestions('');
+      expect(res).toEqual([null, []]);
+    });
 
-  test('Suggestions failed', async () => {
-    axios.get.mockImplementation(() => Promise.reject('Error'));
-    expect(await imdb.getSuggestions('avengers')).toEqual(['Error', []]);
+    test('Suggestions failed', async () => {
+      axios.get.mockRejectedValue('Error');
+      expect(await imdb.getSuggestions('avengers')).toEqual(['Error', []]);
+    });
   });
 });
+

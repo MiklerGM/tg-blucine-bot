@@ -7,6 +7,7 @@
     "lint": "eslint .",
     "lint-fix": "eslint . --fix",
     "test": "jest",
+    "test-integration": "FETCH_REMOTE=1 jest",
     "test-watch": "jest --watch"
   },
   "repository": {

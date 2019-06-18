@@ -44,7 +44,7 @@ const getSuggestions = async (s) => {
   const url = getLink(es);
   const [err, res] = await to(axios.get(url));
   if (err) return [err, []];
-  return [null, filmsFromSuggestion(res)];
+  return [null, filmsFromSuggestion(res.data)];
 }
 
 module.exports = {
