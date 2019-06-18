@@ -1,3 +1,6 @@
+const axios = require('axios');
+const to = require('await-to-js').default;
+
 const filmsFromSuggestion = (json) => {
   if (!json || json.v !== 1 || !Array.isArray(json.d)) return [];
   const arr = json.d
@@ -35,4 +38,15 @@ const getLink = (s = '', u = '') => ([
   s.substr(0, 1),
   `${s}.json`]).join('/');
 
-module.exports = { filmsFromSuggestion, escapeSearchString, getLink };
+const getSuggestions = async (s) => {
+  const es = escapeSearchString(s);
+  if (es.length < 1) return [null, []];
+  const url = getLink(es);
+  const [err, res] = await to(axios.get(url));
+  if (err) return [err, []];
+  return [null, filmsFromSuggestion(res)];
+}
+
+module.exports = {
+  filmsFromSuggestion, escapeSearchString, getLink, getSuggestions
+};

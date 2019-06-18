@@ -1,16 +1,18 @@
+const axios = require('axios');
+jest.mock("axios");
+
 const imdb = require('./imdb');
 
 describe('imdb suggestions', () => {
-  test('Select films', () => {
-    const avengers = require('./suggestion/avengers.test.json');
-    const avengersRes = require('./suggestion/avengers.res.json');
-  
-    const batman = require('./suggestion/batman.test.json');
-    const batmanRes = require('./suggestion/batman.res.json');
-  
-    const strange = require('./suggestion/doctor_strange.test.json');
-    const strangeRes = require('./suggestion/doctor_strange.res.json');
+  const avengers = require('./suggestion/avengers.test.json');
+  const avengersRes = require('./suggestion/avengers.res.json');
+  const batman = require('./suggestion/batman.test.json');
+  const batmanRes = require('./suggestion/batman.res.json');
 
+  const strange = require('./suggestion/doctor_strange.test.json');
+  const strangeRes = require('./suggestion/doctor_strange.res.json');
+
+  test('Select films', () => {  
     expect(imdb.filmsFromSuggestion()).toEqual([]);
     expect(imdb.filmsFromSuggestion({})).toEqual([]);
     expect(imdb.filmsFromSuggestion(avengers)).toEqual(avengersRes);
@@ -32,6 +34,19 @@ describe('imdb suggestions', () => {
     expect(imdb.getLink('batman', 'title'))
       .toEqual('https://v2.sg.media-imdb.com/suggestion/title/b/batman.json');
   });
-})
 
+  // https://stackoverflow.com/questions/45016033/how-do-i-test-axios-in-jest
+  test('Suggestions received', async () => {
+    axios.get.mockImplementation(() => Promise.resolve(strange));
+    let res = await imdb.getSuggestions('Doctor Strange');
+    expect(axios.get).toBeCalledWith('https://v2.sg.media-imdb.com/suggestion/d/doctor_strange.json')
+    expect(res).toEqual([null, strangeRes]);
+    res = await imdb.getSuggestions('');
+    expect(res).toEqual([null, []]);
+  });
 
+  test('Suggestions failed', async () => {
+    axios.get.mockImplementation(() => Promise.reject('Error'));
+    expect(await imdb.getSuggestions('avengers')).toEqual(['Error', []]);
+  });
+});
