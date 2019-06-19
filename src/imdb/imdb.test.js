@@ -27,10 +27,16 @@ describe('imdb suggestions', () => {
     expect(imdb.escapeSearchString('Let\'s Dance')).toEqual('lets_dance');
     expect(imdb.escapeSearchString('Mädchen in Uniform')).toEqual('madchen_in_uniform');
     expect(imdb.escapeSearchString('Das weiße Band')).toEqual('das_weisse_band');
+    const long = 'Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb';
+    expect(imdb.escapeSearchString(long)).toEqual('dr_strangelove_or_');
   });
 
   test('Generate link', () => {
+    expect(imdb.getLink())
+      .toEqual('https://v2.sg.media-imdb.com/suggestion//.json');
     expect(imdb.getLink('vampyr'))
+      .toEqual('https://v2.sg.media-imdb.com/suggestion/v/vampyr.json');
+    expect(imdb.getLink('vampyr', undefined))
       .toEqual('https://v2.sg.media-imdb.com/suggestion/v/vampyr.json');
     expect(imdb.getLink('batman', 'title'))
       .toEqual('https://v2.sg.media-imdb.com/suggestion/title/b/batman.json');
