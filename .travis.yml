@@ -1,9 +1,14 @@
-cache: npm
+cache:
+  directories:
+  - "$HOME/.npm"
 install:
-  - npm install
+  - npm install -g codecov
+  - npm ci
 language: node_js
 node_js:
   - '10'
+  - '12'
 script:
   - npm run lint
   - npm run test-integration
+  - codecov

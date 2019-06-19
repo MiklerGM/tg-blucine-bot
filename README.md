@@ -1,6 +1,7 @@
 # tg-blucine-bot
 
 [![Build Status](https://travis-ci.com/MiklerGM/tg-blucine-bot.svg?branch=master)](https://travis-ci.com/MiklerGM/tg-blucine-bot)
+[![codecov](https://codecov.io/gh/MiklerGM/tg-blucine-bot/branch/master/graph/badge.svg)](https://codecov.io/gh/MiklerGM/tg-blucine-bot)
 
 Telegram bot for finding blu-ray release dates 
 Information is fetched from the IMDb API and OMDb API
