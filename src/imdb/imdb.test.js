@@ -47,7 +47,7 @@ describe('imdb suggestions', () => {
     test('Suggestions received', async () => {
       axios.get.mockResolvedValue({ data: strange });
       let res = await imdb.getSuggestions('Doctor Strange');
-      expect(axios.get).toBeCalledWith('https://v2.sg.media-imdb.com/suggestion/d/doctor_strange.json')
+      expect(axios.get).toBeCalledWith('https://v2.sg.media-imdb.com/suggestion/d/doctor_strange.json');
       expect(res).toEqual([null, strangeRes]);
       res = await imdb.getSuggestions('');
       expect(res).toEqual([null, []]);
