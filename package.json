@@ -6,9 +6,9 @@
   "scripts": {
     "lint": "eslint .",
     "lint-fix": "eslint . --fix",
-    "test": "jest",
-    "test-integration": "FETCH_REMOTE=1 jest",
-    "test-watch": "jest --watch"
+    "test": "jest --colors",
+    "test-integration": "FETCH_REMOTE=1 jest --colors",
+    "test-watch": "jest --watch --colors"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,10 @@
     "url": "https://github.com/MiklerGM/tg-blucine-bot/issues"
   },
   "homepage": "https://github.com/MiklerGM/tg-blucine-bot#readme",
+  "jest": {
+    "collectCoverage": true,
+    "collectCoverageFrom": ["src/**/*.{js,jsx}"]
+  },
   "lint-staged": {
     "*.js": [
       "eslint",
