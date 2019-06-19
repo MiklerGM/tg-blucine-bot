@@ -2,8 +2,10 @@
   "name": "tg-blucine-bot",
   "version": "1.0.0",
   "description": "Telegram bot for finding blu-ray release dates",
-  "main": "index.js",
+  "main": "./src/index.js",
   "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
     "lint": "eslint .",
     "lint-fix": "eslint . --fix",
     "test": "jest --colors",
@@ -44,7 +46,8 @@
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "husky": "^2.4.1",
     "jest": "^24.8.0",
-    "lint-staged": "^8.2.1"
+    "lint-staged": "^8.2.1",
+    "nodemon": "^1.19.1"
   },
   "dependencies": {
     "await-to-js": "^2.1.1",
