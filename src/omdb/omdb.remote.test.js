@@ -1,16 +1,14 @@
 const { testAPI } = require('../helper')
+const omdb = require('./omdb');
 
 beforeAll(() => {
-  if (!process.env.OMDB_TOKEN) {
+  if (omdb.getKey() === omdb.defaultToken) {
     console.warn('Using open key OMDb token');
-    process.env.OMDB_TOKEN = 'PlzBanMe';
   }
 });
 
 testAPI('fetch data from OMDb API', async () => {
-  const omdb = require('./omdb');
   const [err, res] = await omdb.getData('tt0120689');
-  console.log(err, res);
   expect(err).toEqual(null);
   expect(res.Response).toBeDefined();
 });
