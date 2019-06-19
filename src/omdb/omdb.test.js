@@ -5,17 +5,24 @@ const godzilla = require('./api/godzilla');
 const noData = require('./api/no_data.json');
 
 describe('OMDb Token', () => {
-  test('OMDb API key', () => {
-    process.env.OMDB_TOKEN = undefined;
-    const omdb = require('./omdb');
+  const env = { ...process.env };
+  beforeEach(() => {
+    jest.resetModules();
+    delete process.env.OMDB_TOKEN;
+  });
 
+  afterEach(() => {
+    process.env = { ...env };
+  });
+
+  test('OMDb API key', () => {
+    const omdb = require('./omdb');
     expect(omdb.getKey()).toEqual(omdb.defaultToken);
     omdb.setKey('setKey');
     expect(omdb.getKey()).toEqual('setKey');
   });
 
   test('OMDb API key from ENV', () => {
-    jest.resetModules();
     process.env.OMDB_TOKEN = 'envToken';
     const omdb = require('./omdb');
     expect(omdb.getKey()).toEqual('envToken');

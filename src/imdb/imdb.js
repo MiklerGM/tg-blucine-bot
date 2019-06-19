@@ -6,11 +6,10 @@ const filmsFromSuggestion = (json) => {
   const arr = json.d
     .filter(f => (f.q === 'feature' || f.q === 'video'))
     .sort((a, b) => {
-      const r = b.y - a.y;
-      if (Number.isNaN(r)) {
-        if (b.y === undefined) return 1;
-      }
-      return r;
+      if (b.y === a.y) return 0;
+      if (b.y === undefined) return 1;
+      if (a.y === undefined) return -1;
+      return b.y - a.y;
     })
     .map(f => ({ label: f.l, id: f.id, year: f.y }));
   return arr;
