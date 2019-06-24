@@ -27,16 +27,17 @@ const movie = async (msg, match) => {
   }
 };
 
+const parseRating = (s) => {
+  const a = s.Source;
+  if ('Rotten Tomatoes' === a) return `🍅${s.Value}`;
+  if ('Internet Movie Database' === a) return `⭐${s.Value.replace('/10', '')}`;
+  if ('Metacritic' === a) return `Ⓜ️${s.Value}`;
+  return undefined;
+};
+
 const getRating = (r = []) => {
   if (!Array.isArray(r) || r.length === 0) return '';
-  const rating = r.map((s) => {
-    switch (s.Source) {
-      case 'Rotten Tomatoes': return `🍅${s.Value}`;
-      case 'Internet Movie Database': return `⭐${s.Value.replace('/10', '')}`;
-      case 'Metacritic': return `Ⓜ️${s.Value}`;
-      default: return '';
-    }
-  }).filter(f => f !== '');
+  const rating = r.map(parseRating).filter(f => f !== undefined);
   return rating.length > 0 ? `_${rating.join(' ')}_` : '';
 }
 
@@ -50,17 +51,17 @@ const getMessage = (data) => {
   return msg.join('\n');
 }
 
-const info = async (query) => {
+const sendResponse = async (query) => {
   const robot = bot.getBot();
   const [err, data] = await omdb.getData(query.data);
   const message = err
     ? 'Error'
     : getMessage(data);
-  if (data.Poster !== 'N/A') {
+  if (data.Poster !== 'N/A' && !err) {
     robot.sendPhoto(query.from.id, data.Poster, { caption: message, parse_mode: 'Markdown' });
   } else {
     robot.sendMessage(query.from.id, message, { parse_mode: 'Markdown' });
   }
 }
 
-module.exports = { regexp, command: movie, response: info };
+module.exports = { regexp, command: movie, response: sendResponse };

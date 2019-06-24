@@ -37,17 +37,37 @@ test('Movies suggestions failed', async () => {
   expect(mockBot.sendMessage).toBeCalledWith('id', 'Search Failed');
 });
 
-test('Movie Rating', () => {
-  const getRating = rewire('./movie').__get__('getRating');
-  expect(getRating([])).toEqual('');
+describe('Movie Rating', () => {
   const ratings = godzilla.Ratings;
-  expect(getRating(ratings)).toEqual('_⭐8.3 🍅39% Ⓜ️50/100_');
-  expect(getRating([ratings[0], ratings[1]])).toEqual('_⭐8.3 🍅39%_');
-  expect(getRating([ratings[0], ratings[2]])).toEqual('_⭐8.3 Ⓜ️50/100_');
-  expect(getRating([ratings[1], ratings[2]])).toEqual('_🍅39% Ⓜ️50/100_');
-  expect(getRating([ratings[2], {}])).toEqual('_Ⓜ️50/100_');
-  expect(getRating([{ Source: 'ccc' }, { Source: 'unsupported' }])).toEqual('');
+  test('Rating Parser', () => {
+    const parseRating = rewire('./movie').__get__('parseRating');
+    expect(parseRating({Source: 'AAA', 'Value': 'BBB' })).toEqual(undefined);
+    expect(parseRating({
+      'Source': 'Internet Movie Database',
+      'Value': '7.7/10'
+    })).toEqual('⭐7.7');
+    expect(parseRating({
+      "Source": "Rotten Tomatoes",
+      "Value": "84%"
+    })).toEqual('🍅84%');
+    expect(parseRating({
+      "Source": "Metacritic",
+      "Value": "67/100"
+    })).toEqual('Ⓜ️67/100')
+  });
 
+  test('Movie Ratings String', () => {
+    const getRating = rewire('./movie').__get__('getRating');
+    expect(getRating()).toEqual('');
+    expect(getRating([])).toEqual('');
+    expect(getRating(ratings)).toEqual('_⭐8.3 🍅39% Ⓜ️50/100_');
+    expect(getRating([ratings[0], ratings[1]])).toEqual('_⭐8.3 🍅39%_');
+    expect(getRating([ratings[0], ratings[2]])).toEqual('_⭐8.3 Ⓜ️50/100_');
+    expect(getRating([ratings[1], ratings[2]])).toEqual('_🍅39% Ⓜ️50/100_');
+    expect(getRating([ratings[2], {}])).toEqual('_Ⓜ️50/100_');
+    expect(getRating([{ Source: 'ccc' }, { Source: 'unsupported' }])).toEqual('');
+    expect(getRating([...ratings, { ...ratings[0], Source: 'pimpdb' }])).toEqual('_⭐8.3 🍅39% Ⓜ️50/100_');
+  });
 });
 
 describe('getMessage', () => {
@@ -67,16 +87,34 @@ describe('getMessage', () => {
   });
 
   describe('omdb response', () => {
-    test('Response with Poster', async (done) => {
+    test('Response with Poster', async () => {
       omdb.getData.mockResolvedValue([null, { ...godzilla }]);
-      
-      await movie.response({ from: { id: 'id' }, data: 'test' });
-      expect(mockBot.sendPhoto).toBeCalledWith(
+      await movie.response({ from: { id: 'id' } });
+      expect(mockBot.sendPhoto).lastCalledWith(
         'id',
         godzilla.Poster,
         { caption: getMessage(godzilla), parse_mode: 'Markdown' }
       );
-      done();
+    });
+
+    test('Response w/o Poster', async () => {
+      omdb.getData.mockResolvedValue([null, { ...godzilla, Poster: 'N/A' }]);
+      await movie.response({ from: { id: 'id' } });
+      expect(mockBot.sendMessage).lastCalledWith(
+        'id',
+        getMessage(godzilla),
+        { parse_mode: 'Markdown' }
+      );
+    });
+
+    test('Response Error', async () => {
+      omdb.getData.mockResolvedValue([true, { Title: 'No no no'}]);
+      await movie.response({ from: { id: 'id' } });
+      expect(mockBot.sendMessage).lastCalledWith(
+        'id',
+        'Error',
+        { parse_mode: 'Markdown' }
+      );
     });
   });
 });
