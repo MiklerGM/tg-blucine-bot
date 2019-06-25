@@ -1,14 +1,37 @@
+language: node_js
+node_js:
+  - '10'
+  - '12'
+services:
+  - docker
+git:
+  depth: false
+  quiet: true
 cache:
   directories:
   - "$HOME/.npm"
 install:
   - npm install -g codecov
   - npm ci
-language: node_js
-node_js:
-  - '10'
-  - '12'
-script:
-  - npm run lint
-  - npm run test-integration
-  - codecov
+jobs:
+  include:
+    - stage: lint
+      script: npm run lint
+    - stage: test
+      script: npm run test-integration
+    - stage: coverage
+      node_js: '12'
+      script: codecov
+    - stage: docker build
+      node_js: '12'
+      script:
+        - docker build --rm -t "${DOCKER_USERNAME}/${DOCKER_IMAGE}:latest" -t "${DOCKER_USERNAME}/${DOCKER_IMAGE}:git$(git rev-parse --short HEAD)" .
+    - stage: docker push
+      node_js: '12'
+      if: branch = master
+      script:
+        - npm ci --prod
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - docker build -t "${DOCKER_USERNAME}/${DOCKER_IMAGE}:latest" -t "${DOCKER_USERNAME}/${DOCKER_IMAGE}:git$(git rev-parse --short HEAD)" .
+        - docker push "${DOCKER_USERNAME}/${DOCKER_IMAGE}:latest"
+        - docker push "${DOCKER_USERNAME}/${DOCKER_IMAGE}:git$(git rev-parse --short HEAD)"
