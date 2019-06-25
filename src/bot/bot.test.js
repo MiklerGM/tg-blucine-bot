@@ -1,8 +1,15 @@
 const TelegramBot = require('node-telegram-bot-api');
 jest.mock('node-telegram-bot-api');
 
+const env = process.env;
+
+test('No token', () => {
+  delete process.env.BOT_TOKEN;
+  const bot = require('./bot');
+  expect(bot.startBot).toThrow();
+});
+
 describe('Bot creation', () => {
-  const env = process.env;
   beforeAll(() => {
     process.env.BOT_TOKEN = 'dummyToken';
   });

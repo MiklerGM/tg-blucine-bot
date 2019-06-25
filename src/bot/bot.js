@@ -9,6 +9,7 @@ const getBot = () => {
 
 const startBot = (cb) => {
   const token = process.env.BOT_TOKEN;
+  if (!token) throw new Error('Can\'t start bot without BOT_TOKEN, set it first');
   bot = new TelegramBot(token, { polling: true });
   cb();
 };
