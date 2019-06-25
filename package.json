@@ -12,6 +12,9 @@
     "test-integration": "FETCH_REMOTE=1 jest --colors",
     "test-watch": "jest --watch --colors"
   },
+  "engines": {
+    "node": ">=10"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MiklerGM/tg-blucine-bot.git"
