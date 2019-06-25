@@ -1,0 +1,7 @@
+version: '3'
+services:
+  bot:
+    image: morlov/tg-blucine-bot
+    env_file:
+      bot.env
+    restart: always
