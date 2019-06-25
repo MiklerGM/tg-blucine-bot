@@ -20,13 +20,17 @@ script:
   - codecov
 jobs:
   include:
-    - stage: docker
+    - stage: docker build
       node_js: node
       script:
         - npm ci --prod
         - docker build --rm -t "${DOCKER_USERNAME}/${DOCKER_IMAGE}:latest" -t "${DOCKER_USERNAME}/${DOCKER_IMAGE}:git$(git rev-parse --short HEAD)" .
+    - stage: docker push
+      node_js: node
       if: branch = master
+      script:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
         - npm ci --prod
+        - docker build -t "${DOCKER_USERNAME}/${DOCKER_IMAGE}:latest" -t "${DOCKER_USERNAME}/${DOCKER_IMAGE}:git$(git rev-parse --short HEAD)" .
         - docker push "${DOCKER_USERNAME}/${DOCKER_IMAGE}:latest"
         - docker push "${DOCKER_USERNAME}/${DOCKER_IMAGE}:git$(git rev-parse --short HEAD)"
