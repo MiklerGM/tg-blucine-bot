@@ -16,8 +16,10 @@ install:
 jobs:
   include:
     - stage: lint
+      node_js: '12'
       script: npm run lint
-    - stage: test
+    - stage: test-integration
+      node_js: '12'
       script: npm run test-integration
     - stage: coverage
       node_js: '12'
@@ -32,6 +34,6 @@ jobs:
       script:
         - npm ci --prod
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-        - docker build -t "${DOCKER_USERNAME}/${DOCKER_IMAGE}:latest" -t "${DOCKER_USERNAME}/${DOCKER_IMAGE}:git$(git rev-parse --short HEAD)" .
+        - docker build -t "${DOCKER_PROFILE}/${DOCKER_IMAGE}:latest" -t "${DOCKER_PROFILE}/${DOCKER_IMAGE}:git$(git rev-parse --short HEAD)" .
         - docker push "${DOCKER_USERNAME}/${DOCKER_IMAGE}:latest"
         - docker push "${DOCKER_USERNAME}/${DOCKER_IMAGE}:git$(git rev-parse --short HEAD)"
