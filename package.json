@@ -27,6 +27,7 @@
   "homepage": "https://github.com/MiklerGM/tg-blucine-bot#readme",
   "jest": {
     "collectCoverage": true,
+    "testEnvironment": "node",
     "collectCoverageFrom": [
       "src/**/*.{js,jsx}"
     ]
