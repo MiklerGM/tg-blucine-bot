@@ -1,5 +1,7 @@
 let fetchRemote = process.env.FETCH_REMOTE;
 
+jest.setTimeout(30000);
+
 const forceFetch = (f) => {
   fetchRemote = Boolean(f);
   return null;

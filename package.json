@@ -27,6 +27,7 @@
   "homepage": "https://github.com/MiklerGM/tg-blucine-bot#readme",
   "jest": {
     "collectCoverage": true,
+    "testEnvironment": "node",
     "collectCoverageFrom": [
       "src/**/*.{js,jsx}"
     ]
@@ -43,20 +44,20 @@
     }
   },
   "devDependencies": {
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb": "^17.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.1.0",
     "eslint-config-node": "^4.0.0",
-    "eslint-plugin-jsx-a11y": "^6.2.1",
-    "husky": "^2.4.1",
-    "jest": "^24.8.0",
-    "lint-staged": "^8.2.1",
-    "nodemon": "^1.19.1",
-    "rewire": "^4.0.1"
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "husky": "^4.2.3",
+    "jest": "^25.2.7",
+    "lint-staged": "^10.1.1",
+    "nodemon": "^2.0.2",
+    "rewire": "^5.0.0"
   },
   "dependencies": {
     "await-to-js": "^2.1.1",
-    "axios": "^0.19.0",
-    "node-telegram-bot-api": "^0.30.0",
+    "axios": "^0.19.2",
+    "node-telegram-bot-api": "^0.40.0",
     "node-telegram-keyboard-wrapper": "^2.0.1",
     "sentry": "^0.1.2"
   }

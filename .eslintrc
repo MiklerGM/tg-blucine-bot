@@ -14,11 +14,7 @@
     "no-console": 0,
     "no-alert": 0,
     "linebreak-style": "off",
-  
     "jsx-quotes": "off",
-    "no-param-reassign": "warn",
-    "plugins": [
-      "jsx-a11y"
-    ]
+    "no-param-reassign": "warn"
   }
 }
