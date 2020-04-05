@@ -52,13 +52,16 @@
     "jest": "^25.2.7",
     "lint-staged": "^10.1.1",
     "nodemon": "^2.0.2",
-    "rewire": "^5.0.0"
+    "rewire": "^5.0.0",
+    "ts-jest": "^25.3.1",
+    "ts-node": "^8.8.2"
   },
   "dependencies": {
     "await-to-js": "^2.1.1",
     "axios": "^0.19.2",
     "node-telegram-bot-api": "^0.40.0",
     "node-telegram-keyboard-wrapper": "^2.0.1",
-    "sentry": "^0.1.2"
+    "sentry": "^0.1.2",
+    "typescript": "^3.8.3"
   }
 }
