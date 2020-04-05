@@ -6,8 +6,10 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "lint": "eslint .",
-    "lint-fix": "eslint . --fix",
+    "build-ts": "tsc",
+    "watch-ts": "tsc -w",
+    "lint": "eslint src/",
+    "lint-fix": "eslint src/ --fix",
     "test": "jest --colors",
     "test-integration": "FETCH_REMOTE=1 jest --colors",
     "test-watch": "jest --watch --colors"
@@ -25,16 +27,9 @@
     "url": "https://github.com/MiklerGM/tg-blucine-bot/issues"
   },
   "homepage": "https://github.com/MiklerGM/tg-blucine-bot#readme",
-  "jest": {
-    "collectCoverage": true,
-    "testEnvironment": "node",
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx}"
-    ]
-  },
   "lint-staged": {
     "*.js": [
-      "eslint",
+      "eslint src/",
       "jest --bail --findRelatedTests"
     ]
   },
@@ -44,6 +39,9 @@
     }
   },
   "devDependencies": {
+    "@types/jest": "^25.2.1",
+    "@types/node": "^13.11.0",
+    "@types/node-telegram-bot-api": "^0.40.2",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.1.0",
     "eslint-config-node": "^4.0.0",
