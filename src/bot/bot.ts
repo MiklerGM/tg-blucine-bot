@@ -1,17 +1,15 @@
-const TelegramBot = require('node-telegram-bot-api');
+import TelegramBot from 'node-telegram-bot-api';
 
-let bot = undefined;
+let bot: any = undefined;
 
-const getBot = () => {
+export const getBot = () => {
   if (bot === undefined) throw new Error('Bot is not initialized, start it first');
   return bot;
 };
 
-const startBot = (cb) => {
+export const startBot = (cb: () => void) => {
   const token = process.env.BOT_TOKEN;
   if (!token) throw new Error('Can\'t start bot without BOT_TOKEN, set it first');
   bot = new TelegramBot(token, { polling: true });
   cb();
 };
-
-module.exports = { getBot, startBot };

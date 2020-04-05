@@ -1,24 +1,25 @@
-const bot = require('../bot/bot');
-const imdb = require('../imdb/imdb');
-const omdb = require('../omdb/omdb');
+import commandInterface from './commandInterface';
+import { getBot } from '../bot/bot';
+import imdb from '../imdb/imdb';
+import omdb from '../omdb/omdb';
 
 const { InlineKeyboard } = require('node-telegram-keyboard-wrapper');
 
 
 const regexp = new RegExp(/\/movie (.+)/, 'i');
 
-const getKeyboard = (s) => {
+const getKeyboard = (s: any[]) => {
   const k = new InlineKeyboard();
-  s.map(i => k.addRow({
+  s.map((i: { label: any; year: any; id: any; }) => k.addRow({
     text: `${i.label}${i.year ? ` (${i.year})` : ''}`,
     callback_data: i.id
   }));
   return k;
 };
 
-const movie = async (msg, match) => {
+const movie = async (msg: { from: { id: any; }; }, match: any[]) => {
   const [err, suggestions] = await imdb.getSuggestions(match[1]);
-  const robot = bot.getBot();
+  const robot = getBot();
   if (err) {
     robot.sendMessage(msg.from.id, 'Search Failed');
   } else {
@@ -27,7 +28,7 @@ const movie = async (msg, match) => {
   }
 };
 
-const parseRating = (s) => {
+const parseRating = (s: { Source: any; Value: string; }) => {
   const a = s.Source;
   if ('Rotten Tomatoes' === a) return `🍅${s.Value}`;
   if ('Internet Movie Database' === a) return `⭐${s.Value.replace('/10', '')}`;
@@ -35,13 +36,13 @@ const parseRating = (s) => {
   return undefined;
 };
 
-const getRating = (r = []) => {
+const getRating = (r: any[]) => {
   if (!Array.isArray(r) || r.length === 0) return '';
   const rating = r.map(parseRating).filter(f => f !== undefined);
   return rating.length > 0 ? `_${rating.join(' ')}_` : '';
 }
 
-const getMessage = (data) => {
+const getMessage = (data: { Title: any; Ratings: any[]; Released: any; DVD: string; }) => {
   const msg = [
     `*${data.Title}* ${getRating(data.Ratings)}`,
     `🎦 Release: ${data.Released}`,
@@ -51,8 +52,8 @@ const getMessage = (data) => {
   return msg.join('\n');
 }
 
-const sendResponse = async (query) => {
-  const robot = bot.getBot();
+const sendResponse = async (query: { data: any; from: { id: any; }; }) => {
+  const robot = getBot();
   const [err, data] = await omdb.getData(query.data);
   const message = err
     ? 'Error'
@@ -64,4 +65,6 @@ const sendResponse = async (query) => {
   }
 }
 
-module.exports = { regexp, command: movie, response: sendResponse };
+const command: commandInterface = { regexp, command: movie, response: sendResponse };
+
+export default command;
