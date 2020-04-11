@@ -2,12 +2,14 @@
   "name": "tg-blucine-bot",
   "version": "1.0.0",
   "description": "Telegram bot for finding blu-ray release dates",
-  "main": "./src/index.js",
+  "main": "./src/index.ts",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js",
-    "lint": "eslint .",
-    "lint-fix": "eslint . --fix",
+    "start": "ts-node src/index.ts",
+    "dev": "nodemon",
+    "build-ts": "tsc",
+    "watch-ts": "tsc -w",
+    "lint": "eslint src/",
+    "lint-fix": "eslint src/ --fix",
     "test": "jest --colors",
     "test-integration": "FETCH_REMOTE=1 jest --colors",
     "test-watch": "jest --watch --colors"
@@ -25,16 +27,9 @@
     "url": "https://github.com/MiklerGM/tg-blucine-bot/issues"
   },
   "homepage": "https://github.com/MiklerGM/tg-blucine-bot#readme",
-  "jest": {
-    "collectCoverage": true,
-    "testEnvironment": "node",
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx}"
-    ]
-  },
   "lint-staged": {
     "*.js": [
-      "eslint",
+      "eslint src/",
       "jest --bail --findRelatedTests"
     ]
   },
@@ -43,7 +38,24 @@
       "pre-commit": "lint-staged"
     }
   },
+  "nodemonConfig": {
+    "ignore": [
+      "**/*.test.{ts,js}",
+      "**/*.spec.{ts,js}",
+      ".git",
+      "node_modules"
+    ],
+    "watch": [
+      "src"
+    ],
+    "exec": "npm start",
+    "ext": "ts"
+  },
   "devDependencies": {
+    "@types/jest": "^25.2.1",
+    "@types/node": "^13.11.0",
+    "@types/node-telegram-bot-api": "^0.40.2",
+    "@types/rewire": "^2.5.28",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.1.0",
     "eslint-config-node": "^4.0.0",
@@ -52,7 +64,10 @@
     "jest": "^25.2.7",
     "lint-staged": "^10.1.1",
     "nodemon": "^2.0.2",
-    "rewire": "^5.0.0"
+    "rewire": "^5.0.0",
+    "ts-jest": "^25.3.1",
+    "ts-node": "^8.8.2",
+    "typescript": "^3.8.3"
   },
   "dependencies": {
     "await-to-js": "^2.1.1",

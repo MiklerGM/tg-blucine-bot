@@ -1,6 +1,8 @@
 const TelegramBot = require('node-telegram-bot-api');
 jest.mock('node-telegram-bot-api');
 
+const mockedBot = TelegramBot as jest.Mocked<typeof TelegramBot>;
+
 const env = process.env;
 
 test('No token', () => {
@@ -26,8 +28,8 @@ describe('Bot creation', () => {
   test('Init Bot', (done) => {
     const bot = require('./bot');
     bot.startBot(done);
-    expect(TelegramBot).toHaveBeenCalledTimes(1)
-    expect(TelegramBot).toBeCalledWith('dummyToken', { polling: true });
+    expect(mockedBot).toHaveBeenCalledTimes(1)
+    expect(mockedBot).toBeCalledWith('dummyToken', { polling: true });
   });
 
   test('Get Bot', () => {
@@ -35,3 +37,5 @@ describe('Bot creation', () => {
     expect(bot.getBot()).toBeDefined();
   });
 });
+
+export {}

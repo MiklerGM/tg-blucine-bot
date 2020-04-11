@@ -1,21 +1,21 @@
-const axios = require('axios');
-const to = require('await-to-js').default;
+import axios from 'axios';
+import to from 'await-to-js';
 
-const filmsFromSuggestion = (json) => {
+const filmsFromSuggestion = (json: { v: number; d: any[]; }) => {
   if (!json || json.v !== 1 || !Array.isArray(json.d)) return [];
   const arr = json.d
-    .filter(f => (f.q === 'feature' || f.q === 'video'))
-    .sort((a, b) => {
+    .filter((f: { q: string; }) => (f.q === 'feature' || f.q === 'video'))
+    .sort((a: { y: number; }, b: { y: number; }) => {
       if (b.y === a.y) return 0;
       if (b.y === undefined) return 1;
       if (a.y === undefined) return -1;
       return b.y - a.y;
     })
-    .map(f => ({ label: f.l, id: f.id, year: f.y }));
+    .map((f: { l: any; id: any; y: any; }) => ({ label: f.l, id: f.id, year: f.y }));
   return arr;
 }
 
-const escapeSearchString = (a) => {
+const escapeSearchString = (a: string) => {
   const G = /[àÀáÁâÂãÃäÄåÅæÆçÇèÈéÉêÊëËìÍíÍîÎïÏðÐñÑòÒóÓôÔõÕöÖøØùÙúÚûÛüÜýÝÿþÞß]/;
   if (a) {
     let b = a.toLowerCase();
@@ -37,7 +37,7 @@ const getLink = (s = '', u = '') => ([
   s.substr(0, 1),
   `${s}.json`]).join('/');
 
-const getSuggestions = async (s) => {
+const getSuggestions = async (s: string): Promise<any> => {
   const es = escapeSearchString(s);
   if (es.length < 1) return [null, []];
   const url = getLink(es);
@@ -46,6 +46,6 @@ const getSuggestions = async (s) => {
   return [null, filmsFromSuggestion(res.data)];
 }
 
-module.exports = {
+export = {
   filmsFromSuggestion, escapeSearchString, getLink, getSuggestions
 };
