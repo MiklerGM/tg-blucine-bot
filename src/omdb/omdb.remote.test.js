@@ -1,7 +1,9 @@
 const { testAPI } = require('../helper')
 const omdb = require('./omdb');
+const { readEnvFile } = require('../updateEnv');
 
 beforeAll(() => {
+  readEnvFile(false);
   if (omdb.getKey() === omdb.defaultToken) {
     console.warn('Using open key OMDb token');
   }
