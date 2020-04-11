@@ -55,9 +55,13 @@ const getMessage = (data: { Title: any; Ratings: any[]; Released: any; DVD: stri
 const sendResponse = async (query: { data: any; from: { id: any; }; }) => {
   const robot = getBot();
   const [err, data] = await omdb.getData(query.data);
-  const message = err
-    ? 'Error'
-    : getMessage(data);
+  let message: string;
+  if (err) {
+    message = 'Error';
+    console.error(err);
+  } else {
+    message = getMessage(data);
+  }
   if (data.Poster !== 'N/A' && !err) {
     robot.sendPhoto(query.from.id, data.Poster, { caption: message, parse_mode: 'Markdown' });
   } else {

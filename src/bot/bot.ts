@@ -1,9 +1,9 @@
 import TelegramBot from 'node-telegram-bot-api';
 
-let bot: any = undefined;
+let bot: TelegramBot;
 
 export const getBot = () => {
-  if (bot === undefined) throw new Error('Bot is not initialized, start it first');
+  if (!bot) throw new Error('Bot is not initialized, start it first');
   return bot;
 };
 
