@@ -1,7 +1,9 @@
 const axios = require('axios');
 jest.mock('axios');
 
-const godzilla = require('./api/godzilla');
+const mockedAxios = axios as jest.Mocked<typeof axios>;
+
+const godzilla = require('./api/godzilla.json');
 const noData = require('./api/no_data.json');
 
 describe('OMDb Token', () => {

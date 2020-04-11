@@ -7,7 +7,10 @@ module.exports = {
   moduleFileExtensions: [
     'ts',
     'js',
+    'json',
   ],
+  "modulePaths": ["<rootDir>/src"],
+  modulePathIgnorePatterns: ["<rootDir>/dist/"],
   collectCoverage: true,
   collectCoverageFrom: [
     'src/**/*.{ts,js,jsx}',
