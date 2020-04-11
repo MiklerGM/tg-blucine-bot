@@ -63,3 +63,5 @@ describe('OMDb Data', () => {
     expect(res).toEqual(['Error', {}]);
   });
 });
+
+export {}

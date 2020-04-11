@@ -1,4 +1,4 @@
-const rewire = require('rewire');
+import rewire from 'rewire';
 
 jest.mock('../imdb/imdb');
 jest.mock('../omdb/omdb');
@@ -16,7 +16,8 @@ const godzilla = require('../omdb/api/godzilla.json');
 const strangeRes = require('../imdb/suggestion/doctor_strange.res.json');
 const strangeKeys = require('../imdb/suggestion/doctor_strange.keys.json');
 
-const movie = require('./movie');
+import movie from './movie';
+import { parseRating, getRating, getMessage } from './movie.helper';
 
 test('Movie RegExp', () => {
   expect('/move'.match(movie.regexp)).toEqual(null);
@@ -40,7 +41,6 @@ test('Movies suggestions failed', async () => {
 describe('Movie Rating', () => {
   const ratings = godzilla.Ratings;
   test('Rating Parser', () => {
-    const parseRating = rewire('./movie').__get__('parseRating');
     expect(parseRating({Source: 'AAA', 'Value': 'BBB' })).toEqual(undefined);
     expect(parseRating({
       'Source': 'Internet Movie Database',
@@ -57,8 +57,7 @@ describe('Movie Rating', () => {
   });
 
   test('Movie Ratings String', () => {
-    const getRating = rewire('./movie').__get__('getRating');
-    expect(getRating()).toEqual('');
+    // expect(getRating()).toEqual('');
     expect(getRating([])).toEqual('');
     expect(getRating(ratings)).toEqual('_⭐8.3 🍅39% Ⓜ️50/100_');
     expect(getRating([ratings[0], ratings[1]])).toEqual('_⭐8.3 🍅39%_');
@@ -71,8 +70,6 @@ describe('Movie Rating', () => {
 });
 
 describe('getMessage', () => {
-  const getMessage = rewire('./movie').__get__('getMessage');
-
   test('Response Message', async () => {
     expect(getMessage(godzilla)).toEqual([
       '*Godzilla: King of the Monsters* _⭐8.3 🍅39% Ⓜ️50/100_',
@@ -118,3 +115,5 @@ describe('getMessage', () => {
     });
   });
 });
+
+export {}

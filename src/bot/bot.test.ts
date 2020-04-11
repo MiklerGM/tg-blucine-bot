@@ -37,3 +37,5 @@ describe('Bot creation', () => {
     expect(bot.getBot()).toBeDefined();
   });
 });
+
+export {}
