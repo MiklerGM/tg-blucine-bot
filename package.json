@@ -56,7 +56,7 @@
   },
   "dependencies": {
     "await-to-js": "^2.1.1",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "node-telegram-bot-api": "^0.40.0",
     "node-telegram-keyboard-wrapper": "^2.0.1",
     "sentry": "^0.1.2"
